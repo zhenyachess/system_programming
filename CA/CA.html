@@ -1,0 +1,9 @@
+#!/bin/bash
+read n
+readarray -n $n -t words
+readarray -s 1 -t subwords
+for(( i=0;i<${#subwords[@]};i++ ))
+do
+	subword=${subwords[$i]}
+	grep -Eo "\w($subword)\w" <<< "${words[@]}" | wc -w
+done

@@ -1,0 +1,63 @@
+#!/bin/bash
+read T
+for(( k=0;k<T;k++ ))
+do
+	read N
+	if(( N%10!=0 ))
+	then
+		echo "-1"
+	else
+		cnt=0
+		for(( i=500;N>0; ))
+		do
+			if(( N<500 ))
+			then
+				break
+			fi
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		for(( i=200;N>0; ))
+		do
+			if(( N<200 ))
+			then
+				break
+			fi
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		for(( i=100;N>0; ))
+		do
+			if(( N<100 ))
+			then
+				break
+			fi
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		for(( i=50;N>0; ))
+		do
+			if(( N<50 ))
+			then
+				break
+			fi
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		for(( i=20;N>0; ))
+		do
+			if(( N<20 ))
+			then
+				break
+			fi
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		for(( i=10;N>0; ))
+		do
+			(( N=N-i ))
+			(( cnt++ ))
+		done
+		echo "$cnt"
+	fi
+done

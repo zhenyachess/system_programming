@@ -1,0 +1,36 @@
+#!/bin/bash
+read T
+for(( i=0;i<T;i++ ))
+do
+	read num
+	read -a mas
+	if(( num%2==1 ))
+	then
+		IFS=$'\n'  #служебный разделитель полей
+		left=($(sort -n <<< "${mas[*]:0:$((num/2))}")) #запись элементов слева от центрального в left
+		right=($(sort -n <<< "${mas[*]:$(((num/2)+1))}")) #запись элементов справа от центрального в right
+		unset IFS  #возврат значения IFS по умолчанию
+		for(( j=0;j<${#left[*]};j++ ))
+		do
+			printf "%d\n" ${left[$j]};
+		done
+		printf "%d\n" ${mas[$((num/2))]}
+		for(( j=${#right[*]}-1;j>=0;j-- ))
+		do
+			printf "%d\n" ${right[$j]};
+		done
+	else
+		IFS=$'\n'
+		left=($(sort -n <<< "${mas[*]:0:$((num/2))}"))
+		right=($(sort -n <<< "${mas[*]:$((num/2))}"))
+		unset IFS
+		for(( j=0;j<${#left[*]};j++ ))
+		do
+			printf "%d\n" ${left[$j]};
+		done
+		for(( j=${#right[*]}-1;j>=0;j-- ))
+		do
+			printf "%d\n" ${right[$j]};
+		done
+	fi
+done

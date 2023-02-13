@@ -1,0 +1,13 @@
+#!/bin/bash
+read -a mas
+N=${mas[0]}
+K=${mas[1]}
+if(( N<=K ))
+then
+	echo "2"
+elif(( (N*2)%K==0 ))
+then
+	echo "$(( ((2*$N)/$K) ))"
+else
+	echo "$(( ((2*$N)/$K)+1 ))"
+fi

@@ -1,0 +1,54 @@
+#!/bin/bash
+read N
+declare -a mas
+X=""
+for(( i=0;i<N;i++ ))
+do
+	read t
+	X="$X $t"
+done
+#reg_adress='([a-zA-Z0-9][a-zA-Z0-9_.-]*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,4})(.*)'
+reg_adress='([A-Za-z0-9._-]+[A-Za-z0-9]@([A-Za-z0-9]+\.)+[A-Za-z]{2,})(.*)'
+declare -a temp
+i=0
+k=0
+while [[ $X =~ $reg_adress ]]
+do
+	if(( i==0 ))
+	then
+		temp[$k]=${BASH_REMATCH[1]}
+		(( k++ ))
+		(( i++ ))
+		X=${BASH_REMATCH[3]}
+	else
+		b=0
+		for(( l=0;l<i;l++ ))
+		do
+			if [[ ${BASH_REMATCH[1]} = ${temp[$l]} ]]
+			then
+				b=1
+				X=${BASH_REMATCH[3]}
+			fi
+		done
+		if(( b==0 ))
+		then
+			temp[$k]=${BASH_REMATCH[1]}
+			(( i++ ))
+			(( k++ ))
+			#X=${BASH_REMATCH[2]}
+		fi
+	fi
+done
+IFS=$'\n' sorted=($(sort <<<"${temp[*]}"));
+unset IFS
+t=""
+for(( i=0;i<k;i++ ))
+do
+	if(( i!=k-1 ))
+	then
+		t+="${sorted[$i]};"
+	else
+		t+="${sorted[$i]}"
+	fi
+done
+echo "$t"

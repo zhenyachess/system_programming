@@ -1,0 +1,40 @@
+#!/bin/bash
+read N
+read -a mas
+if(( N==1 ))
+then
+	echo "1"
+elif(( N==2 ))
+then
+	if(( mas[0]==mas[1] ))
+	then
+		echo "2"
+	else
+		echo "1"
+	fi
+else
+	y=0
+	b=0
+	for(( j=0;j<N-1;j++ ))
+	do
+		t=1
+		for(( i=0;i<N;i++ ))
+		do
+			if(( i>j && mas[j]==mas[i] ))
+			then
+				t=$(($t+1))
+				b=1
+				if(( t>y ))
+				then
+					y=$t
+				fi
+			fi
+		done
+	done
+	if(( b==0 ))
+	then
+		echo "1"
+	else
+		echo "$y"
+	fi
+fi

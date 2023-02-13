@@ -1,0 +1,18 @@
+#!/bin/bash
+read N
+declare -a mas
+for(( i=0;i<N;i++ ))
+do
+	read t
+	mas[i]=$t
+done
+reg_valid='^((\.|\_)([0-9])+([A-Za-z]){0,}\_?)$'
+for(( i=0;i<N;i++ ))
+do
+	if [[ ${mas[$i]} =~ $reg_valid ]];
+	then
+		echo "VALID"
+	else
+		echo "INVALID"
+	fi
+done

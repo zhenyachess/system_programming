@@ -1,0 +1,21 @@
+#!/bin/bash
+read N
+str_N=""
+for(( i=0;i<N;i++ ))
+do
+	read t_N
+	str_N+="$t_N "
+done
+read T
+declare -a mas_check
+for(( i=0;i<T;i++ ))
+do
+	read t_T
+	mas_check[$i]=$t_T
+done
+for(( i=0;i<T;i++ ))
+do
+	check=${mas_check[$i]}
+	reg_check='(\b'$check'\b)'
+	grep -Eo "$reg_check" <<< "$str_N" | wc -w
+done

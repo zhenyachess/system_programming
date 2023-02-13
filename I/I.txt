@@ -1,0 +1,30 @@
+#!/bin/bash
+read n k
+declare -A matrix
+for(( i=1;i<=n;i++ ))
+do
+	for(( j=1;j<=k;j++ ))
+	do
+		if(( $i==1 || $j==1 ))
+		then
+			matrix[$i,$j]=1
+		else
+			matrix[$i,$j]=0
+			for(( l=1;l<=n;l++ ))
+			do
+				if(( $i%$l==0 ))
+				then
+					matrix[$i,$j]=$((${matrix[$i,$j]}+${matrix[$l,$(($j-1))]})) 
+				fi
+			done
+		fi
+	done
+done
+for(( i=2;i<=n;i++ ))
+do
+	for(( j=1;j<=k;j++ ))
+	do
+		matrix[$i,$j]=$((${matrix[$i,$j]}+${matrix[$(($i-1)),$j]}))
+	done
+done
+echo ${matrix[$n,$k]}

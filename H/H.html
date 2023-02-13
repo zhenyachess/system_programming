@@ -1,0 +1,13 @@
+#!/bin/bash
+read N
+reg='^[a-zA-Z0-9][a-zA-Z0-9_.-]*[a-zA-Z0-9]@[a-zA-Z0-9]+\.([a-zA-Z]){2,4}$'
+for(( i=0;i<N;i++ ))
+do
+	read X
+	if [[ $X =~ $reg ]];
+	then
+		echo "YES"
+	else
+		echo "NO"
+	fi
+done

@@ -1,0 +1,43 @@
+#!/bin/bash
+read -a t_mas
+M=${t_mas[0]}
+N=${t_mas[1]}
+declare -A matrix
+for(( i=0;i<M;i++ ))
+do
+	read -a mas
+	for(( j=0;j<N;j++ ))
+	do
+		matrix[$i,$j]=${mas[$j]}
+	done
+done
+sum=${matrix[0,0]}
+i=0
+j=0
+declare -A fuel_matrix
+for(( i=0;i<M;i++ ))
+do
+	for(( j=0;j<N;j++ ))
+	do
+		if(( $i==0 && $j==0 ))
+		then
+			fuel_matrix[$i,$j]=${matrix[$i,$j]}
+		elif(( $i==0 && $j>0 ))
+		then
+			fuel_matrix[$i,$j]=$((${fuel_matrix[$i,$(($j-1))]}+${matrix[$i,$j]}))
+		elif(( $i>0 && $j==0 ))
+		then
+			fuel_matrix[$i,$j]=$((${fuel_matrix[$(($i-1)),$j]}+${matrix[$i,$j]}))
+		else
+			check_fuel_1=${fuel_matrix[$(($i-1)),$j]}
+			check_fuel_2=${fuel_matrix[$i,$(($j-1))]}
+			if(( $check_fuel_1<$check_fuel_2 ))
+			then
+				fuel_matrix[$i,$j]=$(($check_fuel_1+${matrix[$i,$j]}))
+			else
+				fuel_matrix[$i,$j]=$(($check_fuel_2+${matrix[$i,$j]}))
+			fi
+		fi
+	done
+done
+echo "${fuel_matrix[$(($i-1)),$(($j-1))]}"

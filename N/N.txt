@@ -1,0 +1,236 @@
+#!/bin/bash
+read a b c
+mas_a_a=($(echo $a | grep -o . ))
+mas_b_b=($(echo $b | grep -o . ))
+mas_c=($(echo $c | grep -o . ))
+cnt_a=${#a}
+cnt_b=${#b}
+cnt_c=${#c}
+N=0
+for(( z=0;z<cnt_a;z++ ))
+do
+	mul=1
+	for(( m=1;m<cnt_a-z;m++ ))
+	do
+		(( mul=mul*10 ))
+	done
+	(( N=N+(mas_a_a[z]*mul) ))
+done
+A=$N
+N=0
+for(( z=0;z<cnt_b;z++ ))
+do
+	mul=1
+	for(( m=1;m<cnt_b-z;m++ ))
+	do
+		(( mul=mul*10 ))
+	done
+	(( N=N+(mas_b_b[z]*mul) ))
+done
+B=$N
+N=0
+for(( z=0;z<cnt_c;z++ ))
+do
+	mul=1
+	for(( m=1;m<cnt_c-z;m++ ))
+	do
+		(( mul=mul*10 ))
+	done
+	(( N=N+(mas_c[z]*mul) ))
+done
+c=$N
+mas_a=($(echo $a | grep -o . | sort ))
+mas_b=($(echo $b | grep -o . | sort ))
+if(( A+B==c ))
+then
+	echo "YES"
+	echo "$a $b"
+else
+	#echo "${mas_a[@]} - отсортированный массив"
+	N=0
+	for(( z=0;z<cnt_a;z++ ))
+	do
+		mul=1
+		for(( m=1;m<cnt_a-z;m++ ))
+		do
+			(( mul=mul*10 ))
+		done
+		(( N=N+(mas_a[z]*mul) ))
+	done
+	cnt_per_a=1
+	ind_a=1
+	declare -a numbers_a
+	numbers_a[0]=$N
+	# РАБОТАЕМ С ЦИФРАМИ ЧИСЛА A #################################
+	while(( 1 ))
+	do
+		(( i=cnt_a-2 ))
+		while(( i>=0 && mas_a[i+1]<=mas_a[i] ))
+		do
+		    (( i-- ))
+		done
+		if(( i==-1 ))
+		then
+			break
+		fi
+		if(( i>=0 ))
+		then
+		    (( j=cnt_a-1 ))
+		    while(( j>=0 && mas_a[j]<=mas_a[i] ))
+		    do
+		        (( j-- ))
+		    done
+		    temp=${mas_a[$i]}      
+		    mas_a[i]=${mas_a[$j]}
+		    mas_a[j]=$temp
+		    #echo ${mas_a[@]}
+		fi
+		(( i++ ))
+		(( j=cnt_a-1 ))
+		while(( i<j ))
+		do
+			temp=${mas_a[$i]}      
+		    mas_a[i]=${mas_a[$j]}
+		    mas_a[j]=$temp
+		    (( i++ ))
+		    (( j-- ))
+		done
+		(( cnt_per_a++ ))
+		N=0
+		for(( z=0;z<cnt_a;z++ ))
+		do
+			mul=1
+			for(( m=1;m<cnt_a-z;m++ ))
+			do
+				(( mul=mul*10 ))
+			done
+			(( N=N+(mas_a[z]*mul) ))
+		done
+		#echo "$N, счетчик - $cnt_per_a"
+		(( numbers_a[ind_a]=N ))
+		(( ind_a++ ))
+	done # ЗАКОНЧИЛИ РАБОТАТЬ С ЦИФРАМИ ЧИСЛА A
+	#echo ${numbers_a[@]}
+	N=0
+	for(( z=0;z<cnt_b;z++ ))
+	do
+		mul=1
+		for(( m=1;m<cnt_b-z;m++ ))
+		do
+			(( mul=mul*10 ))
+		done
+		(( N=N+(mas_b[z]*mul) ))
+	done
+	cnt_per_b=1
+	ind_b=1
+	declare -a numbers_b
+	numbers_b[0]=$N
+	while(( 1 )) # РАБОТАЕМ С ЦИФРАМИ ЧИСЛА B
+	do
+		(( i=cnt_b-2 ))
+		while(( i>=0 && mas_b[i+1]<=mas_b[i] ))
+		do
+		    (( i-- ))
+		done
+		if(( i==-1 ))
+		then
+			break
+		fi
+		if(( i>=0 ))
+		then
+		    (( j=cnt_b-1 ))
+		    while(( j>=0 && mas_b[j]<=mas_b[i] ))
+		    do
+		        (( j-- ))
+		    done
+		    temp=${mas_b[$i]}      
+		    mas_b[i]=${mas_b[$j]}
+		    mas_b[j]=$temp
+		    #echo ${mas_a[@]}
+		fi
+		(( i++ ))
+		(( j=cnt_b-1 ))
+		while(( i<j ))
+		do
+			temp=${mas_b[$i]}      
+		    mas_b[i]=${mas_b[$j]}
+		    mas_b[j]=$temp
+		    (( i++ ))
+		    (( j-- ))
+		done
+		(( cnt_per_b++ ))
+		N=0
+		for(( z=0;z<cnt_b;z++ ))
+		do
+			mul=1
+			for(( m=1;m<cnt_b-z;m++ ))
+			do
+				(( mul=mul*10 ))
+			done
+			(( N=N+(mas_b[z]*mul) ))
+		done
+		#echo "$N, счетчик - $cnt_per"
+		(( numbers_b[ind_b]=N ))
+		(( ind_b++ ))
+	done # ЗАКОНЧИЛИ РАБОТУ С ЦИФРАМИ B
+	#echo ${numbers_b[@]}
+	b=0
+	for(( i=0;i<${#numbers_a[@]};i++ ))
+	do
+		for(( j=0;j<${#numbers_b[@]};j++ ))
+		do
+			if(( numbers_a[i]+numbers_b[j]==c ))
+			then
+				#echo "YES"
+				#echo "${numbers_a[$i]} ${numbers_b[$j]}"
+				A_T=${numbers_a[$i]}
+				B_T=${numbers_b[$j]}
+				b=1
+				break
+			fi
+		done
+	done
+	if(( b==1 ))
+	then
+		check_a=0
+		check_b=0
+		if(( ${#A_T}!=cnt_a ))
+		then
+			str_A=""
+			for(( i=0;i<cnt_a-${#A_T};i++ ))
+			do
+				str_A+="0"
+			done
+			str_A+="$A_T"
+			check_a=1
+		fi
+		if(( ${#B_T}!=cnt_b ))
+		then
+			str_B=""
+			for(( i=0;i<cnt_b-${#B_T};i++ ))
+			do
+				str_B+="0"
+			done
+			str_B+="$B_T"
+			check_b=1
+		fi
+		if(( check_a==1 && check_b==1 ))
+		then
+			echo "YES"
+			echo "$str_A $str_B"
+		elif(( check_a==1 && check_b==0 ))
+		then
+			echo "YES"
+			echo "$str_A $B_T"
+		elif(( check_a==0 && check_b==1 ))
+		then
+			echo "YES"
+			echo "$A_T $str_B"
+		else
+			echo "YES"
+			echo "$A_T $B_T"
+		fi
+	else
+		echo "NO"
+	fi
+fi

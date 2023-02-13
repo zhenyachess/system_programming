@@ -1,0 +1,44 @@
+#!/bin/bash
+read -a mas
+x1=${mas[0]}
+x2=${mas[1]}
+y1=${mas[2]}
+y2=${mas[3]}
+cnt=0
+for(( k=x2;;k++ ))
+do
+	if(( k==0 ))
+	then
+		if(( x1>12 ))
+		then
+			(( n=x1-12 ))
+			(( cnt=cnt+n ))
+		elif(( x1==0 ))
+		then 
+			(( cnt=cnt+12 ))
+		else
+			(( cnt=cnt+x1 ))
+		fi
+	fi
+	if(( k==60 ))
+	then
+		k=0
+		(( x1++ ))
+		if(( x1>12 ))
+		then
+			(( n=x1-12 ))
+			(( cnt=cnt+n ))
+		else
+			(( cnt=cnt+x1 ))
+		fi
+	fi
+	if(( k==30 ))
+	then
+		(( cnt++ ))
+	fi
+	if(( k==y2 && x1==y1 ))
+	then
+		break
+	fi
+done
+echo "$cnt"

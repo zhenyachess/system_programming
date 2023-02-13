@@ -1,0 +1,17 @@
+#!/bin/bash
+read -a mas
+N=${mas[0]}
+t=0
+for(( i=1;i<=N;i++ ))
+do
+	if(( mas[i]<=544 ))
+	then
+		t=1
+		echo "Crash $i"
+		break
+	fi
+done
+if(( t==0 ))
+then
+	echo "No crash"
+fi

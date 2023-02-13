@@ -1,0 +1,105 @@
+#!/bin/bash
+read T
+for(( k=0;k<T;k++ ))
+do
+	read n m d
+	declare -a mas #строки матрицы
+	declare -a temp #массив из матрицы
+	for(( i=0;i<n;i++ ))
+	do
+		read -a mas
+		for(( j=0;j<m;j++ ))
+		do
+			(( temp[j+i*m]=mas[j] ))
+		done
+	done
+	if(( temp[0]==1 ))
+	then
+		(( rem_t=temp[0]%d ))
+	else
+		if(( temp[0]<d )) #находим остаток от первого деления
+		then
+			(( rem_t=d%temp[0] ))
+		else
+			(( rem_t=temp[0]%d ))
+		fi
+	fi
+	bad=0
+	for(( i=1;i<${#temp[@]};i++ )) #проверка
+	do
+		if(( temp[i]==1 ))
+		then
+			(( rem=temp[i]%d ))
+			if(( rem_t!=rem ))
+			then
+				bad=1
+				break
+			fi
+		else
+			if(( temp[i]<d ))
+			then
+				(( rem=d%temp[i] ))
+				if(( rem_t!=rem ))
+				then
+					bad=1
+					break
+				fi
+			else
+				(( rem=temp[i]%d ))
+				if(( rem_t!=rem ))
+				then
+					bad=1
+					break
+				fi
+			fi
+		fi
+	done
+	if(( bad==1 ))
+	then
+		echo "-1"
+	else
+		for(( i=0;i<${#temp[@]};i++ ))
+		do
+		    min=$i
+		    for(( j=i+1;j<${#temp[@]};j++ ))
+		    do
+		        if(( temp[j]<temp[min] ))
+		        then
+		            min=$j
+		    	fi
+		    done
+		    q=${temp[$i]}      
+		    temp[i]=${temp[$min]}
+		    temp[min]=$q
+		done
+		if(( ${#temp[@]}%2==0 ))
+		then
+			(( min_index=(${#temp[@]}/2)-1 ))
+		else
+			(( min_index=${#temp[@]}/2 ))
+		fi
+		cnt=0
+		for(( i=0;i<${#temp[@]};i++ ))
+		do
+			if(( temp[min_index]<temp[i] ))
+			then
+				step=${temp[$min_index]}
+				while(( step!=temp[i] ))
+				do
+					(( step=step+d ))
+					(( cnt++ ))
+				done
+			else
+				step=${temp[$i]}
+				while(( step!=temp[min_index] ))
+				do
+					(( step=step+d ))
+					(( cnt++ ))
+				done
+			fi
+		done
+		echo $cnt
+	fi
+	unset mas
+	unset temp
+done
