@@ -1,0 +1,15 @@
+#!/bin/bash
+read N
+declare -a mas
+i=0
+while read t
+do
+	mas[i]=$t
+	((i++))
+done
+sum=0
+for(( i=0; i<N; i++ ))
+do
+	sum=$(($sum+${mas[$i]}))
+done
+printf "%.3f" $(echo $sum/$N | bc -l)

@@ -1,0 +1,14 @@
+#!/bin/bash
+read N
+t=""
+reg_link='<a href="([^"]*)"[^>]*>[ ]*(<[A-Za-z0-9]*>)*([^<]*)(.*)'
+for (( i=0;i<N;i++ ))
+do
+	read s
+	t="$t $s"
+done
+while [[ $t =~ $reg_link ]]
+do
+	echo ${BASH_REMATCH[1]},${BASH_REMATCH[3]}
+	t=${BASH_REMATCH[4]}
+done

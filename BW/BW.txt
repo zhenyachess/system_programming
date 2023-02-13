@@ -1,0 +1,8 @@
+#!/bin/bash
+while read t
+do
+	if [[ $(rev <<< "$t") == "$t" ]];
+        then	
+		echo "$t"
+	fi
+done

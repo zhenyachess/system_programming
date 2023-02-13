@@ -1,0 +1,21 @@
+#!/bin/bash
+read T
+for(( i=0;i<T;i++ ))
+do
+	read N
+	cnt=1
+	for(( j=1;j<=N/2;j++ ))
+	do
+		if(( N%j==0 ))
+		then
+			(( cnt++ ))
+		fi
+	done
+	if(( cnt%2==0 ))
+	then
+		b=0
+	else
+		b=1
+	fi
+	echo "$b"
+done

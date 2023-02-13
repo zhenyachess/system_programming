@@ -1,0 +1,32 @@
+#!/bin/bash
+read N
+read -a mas
+if(( N==1 ))
+then
+	echo "1"
+else
+	for(( j=0;j<N;j++ ))
+	do
+		t=1
+		for(( i=0;i<N;i++ ))
+		do
+			if(( i!=j && mas[j]!=mas[i] ))
+			then
+				t=$(($t+1))
+				if(( t==N ))
+				then
+					echo "${mas[$j]}"
+					break
+				fi
+			fi
+			if(( t==N ))
+			then
+				break
+			fi
+		done
+		if(( t==N ))
+		then
+			break
+		fi
+	done
+fi

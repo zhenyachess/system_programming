@@ -1,0 +1,52 @@
+#!/bin/bash
+read N
+X=""
+for(( i=0;i<N;i++ ))
+do
+	read t
+	X="$X $t"
+done
+reg_tag='<\s*([a-z][a-z0-9]*)[^>]*>(.*)'
+declare -a mas
+i=0
+k=0
+while [[ $X =~ $reg_tag ]]
+do
+	if(( i==0 ))
+	then
+		mas[$i]=${BASH_REMATCH[1]}
+		X=${BASH_REMATCH[2]}
+		(( i++ ))
+		(( k++ ))
+	else
+		b=0
+		for(( l=0;l<i;l++ ))
+		do
+			if [[ ${BASH_REMATCH[1]} = ${mas[$l]} ]]
+			then
+				b=1
+				X=${BASH_REMATCH[2]}
+			fi
+		done
+		if(( b==0 ))
+		then
+			mas[$k]=${BASH_REMATCH[1]}
+			(( i++ ))
+			(( k++ ))
+			X=${BASH_REMATCH[2]}
+		fi
+	fi
+done
+IFS=$'\n' sorted=($(sort <<<"${mas[*]}"));
+unset IFS
+t=""
+for(( i=0;i<k;i++ ))
+do
+	if(( i!=k-1 ))
+	then
+		t+="${sorted[$i]};"
+	else
+		t+="${sorted[$i]}"
+	fi
+done
+echo "$t"

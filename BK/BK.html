@@ -1,0 +1,10 @@
+#!/bin/bash
+read STR
+y1="y"
+y2="Y"
+if [[ $STR =~ ^"$y1"$ || $STR =~ ^"$y2"$ ]]
+then
+	echo "YES"
+else
+	echo "NO"
+fi

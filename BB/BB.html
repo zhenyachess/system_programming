@@ -1,0 +1,10 @@
+#!/bin/bash
+read -a mas
+x=${mas[0]}
+y=${mas[1]}
+if(( (x*y)%2==0 ))
+then
+	echo "first"
+else
+	echo "second"
+fi

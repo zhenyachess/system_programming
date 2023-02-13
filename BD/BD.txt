@@ -1,0 +1,33 @@
+#!/bin/bash
+read N
+declare -A matrix
+for(( i=0;i<N;i++ ))
+do
+	read -a mas
+	for(( j=0;j<N;j++ ))
+	do
+		matrix[$i,$j]=${mas[$j]}
+	done
+done
+for(( k=0;k<N;k++ ))
+do
+	for(( i=0;i<N;i++ ))
+	do
+		for(( j=0;j<N;j++ ))
+		do
+			if(( matrix[$i,$j]>matrix[$i,$k]+matrix[$k,$j] ))
+			then
+				(( matrix[$i,$j]=matrix[$i,$k]+matrix[$k,$j] ))
+			fi
+		done
+	done
+done
+for(( i=0;i<N;i++ ))
+do
+	declare -a mas
+	for(( j=0;j<N;j++ ))
+	do
+		mas[$j]=${matrix[$i,$j]}
+	done
+	echo "${mas[@]}"
+done

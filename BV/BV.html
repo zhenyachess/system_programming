@@ -1,0 +1,7 @@
+#!/bin/bash
+read T
+for(( i=0;i<T;i++ ))
+do
+	read N
+	echo $(seq -s "*" 1 $N | BC_LINE_LENGTH=99999 bc)
+done
